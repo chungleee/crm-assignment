@@ -104,6 +104,35 @@ class CRM
   end
 
   def search_by_attribute
+    print_attr_menu
+    option_attr = gets.chomp.to_i
+    case option_attr
+    when 1 then
+      puts 'What is the first name?'
+      attribute_value = gets.chomp
+      option_name = Contact.find_by(:first_name, attribute_value)
+      puts "You've selected #{option_name.first_name}"
+
+    when 2 then
+      puts 'What is the last name?'
+      attribute_value = gets.chomp
+      option_name = Contact.find_by(:last_name, attribute_value)
+      puts "You've selected #{option_name.last_name}"
+
+    when 3 then
+      puts 'What is the email?'
+      attribute_value = gets.chomp
+      option_name = Contact.find_by(:email, attribute_value)
+      puts "You've selected #{option_name.email}"
+
+    when 4 then
+      puts 'What is the note?'
+      attribute_value = gets.chomp
+      option_name = Contact.find_by(:note, attribute_value)
+      puts "You've selected #{option_name.note}"
+
+
+    end
 
   end
 
