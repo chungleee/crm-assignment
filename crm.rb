@@ -1,7 +1,11 @@
+#linking file to contacts
+require_relative 'contact'
+require 'pry'
+
 class CRM
 
   def initialize
-
+    main_menu
   end
 
   def main_menu
@@ -9,6 +13,7 @@ class CRM
       print_main_menu
       user_selected = gets.to_i
       call_option(user_selected)
+    end
   end
 
   def print_main_menu
@@ -21,37 +26,97 @@ class CRM
     puts 'Enter a number'
   end
 
-  def call_option
+  def call_option(user_selected)
     case user_selected
-    when 1 then add_new_contact
-    when 2 then modify_existing_contact
-    when 3 then delete_contact
-    when 4 then display_all_contacts
-    when 5 then search_by_attribute
-    when 6 then exit
-
+      when 1 then add_new_contact
+      when 2 then modify_existing_contact
+      when 3 then delete_contact
+      when 4 then display_all_contacts
+      when 5 then search_by_attribute
+      when 6 then exit
     end
   end
 
   def add_new_contact
+    print 'Enter first name:'
+    first_name = gets.chomp
 
+    print 'Enter last name:'
+    last_name = gets.chomp
+
+    print 'Enter email address:'
+    email = gets.chomp
+
+    print 'Enter a note:'
+    note = gets.chomp
+
+    Contact.create(first_name, last_name, email, note)
   end
 
   def modify_existing_contact
 
+    display_all_contacts
+    puts 'Which ID contact would you like to modify?'
+    id = gets.chomp.to_i
+    modify_contact = Contact.find(id)
+    # binding.pry
+
+    print_attr_menu
+    attri_selected = gets.to_i
+
+    case attri_selected
+      when 1 then puts 'Enter new first name'
+        new_value = gets.chomp
+        modify_contact.update(:first_name, new_value)
+      when 2 then puts 'Enter new last name'
+        new_value = gets.chomp
+        modify_contact.update(:last_name, new_value)
+      when 3 then puts 'Enter new email'
+        new_value = gets.chomp
+        modify_contact.update(:email, new_value)
+      when 4 then puts 'Enter new note'
+        new_value = gets.chomp
+        modify_contact.update(:note, new_value)
+    end
+
   end
 
   def delete_contact
+    print_delete_menu
+    delete_select = gets.chomp.to_i
 
+    case delete_select
+      when 1 then display_all_contacts
+        puts 'Which ID contact would you like to delete?'
+        id = gets.chomp.to_i
+        remove_contact = Contact.find(id)
+        remove_contact.delete
+
+      when 2 then Contact.delete_all
+    end
   end
 
   def display_all_contacts
-
+    contact_list = Contact.all
+    contact_list.each do |list|
+      puts "#{list.full_name}"
+    end
   end
 
   def search_by_attribute
 
   end
 
+  def print_attr_menu
+    puts '[1] First name'
+    puts '[2] Last name'
+    puts '[3] Email'
+    puts '[4] Note'
+  end
+
+  def print_delete_menu
+    puts '[1] Select a contact to delete'
+    puts '[2] Delete all contacts'
+  end
 
 end
