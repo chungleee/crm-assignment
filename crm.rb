@@ -55,12 +55,7 @@ class CRM
 
   def modify_existing_contact
 
-    display_all_contacts
-    puts 'Which ID contact would you like to modify?'
-    id = gets.chomp.to_i
-    modify_contact = Contact.find(id)
-    # binding.pry
-
+    modify_contact = search_by_attribute
     print_attr_menu
     attri_selected = gets.to_i
 
@@ -83,17 +78,16 @@ class CRM
 
   def delete_contact
     print_delete_menu
-    delete_select = gets.chomp.to_i
-
-    case delete_select
-      when 1 then display_all_contacts
-        puts 'Which ID contact would you like to delete?'
-        id = gets.chomp.to_i
-        remove_contact = Contact.find(id)
-        remove_contact.delete
-
-      when 2 then Contact.delete_all
+    delete_menu_option = gets.chomp.to_i
+    case delete_menu_option
+    when 1 then
+      contact_delete = search_by_attribute
+      contact_delete.delete
+    when 2 then
+      Contact.delete_all
     end
+
+
   end
 
   def display_all_contacts
@@ -112,25 +106,25 @@ class CRM
       attribute_value = gets.chomp
       option_name = Contact.find_by(:first_name, attribute_value)
       puts "You've selected #{option_name.first_name}"
-
+      option_name
     when 2 then
       puts 'What is the last name?'
       attribute_value = gets.chomp
       option_name = Contact.find_by(:last_name, attribute_value)
       puts "You've selected #{option_name.last_name}"
-
+      option_name
     when 3 then
       puts 'What is the email?'
       attribute_value = gets.chomp
       option_name = Contact.find_by(:email, attribute_value)
       puts "You've selected #{option_name.email}"
-
+      option_name
     when 4 then
       puts 'What is the note?'
       attribute_value = gets.chomp
       option_name = Contact.find_by(:note, attribute_value)
       puts "You've selected #{option_name.note}"
-
+      option_name
 
     end
 
